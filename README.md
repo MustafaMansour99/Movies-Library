@@ -19,3 +19,10 @@
 <!-- What are the features included in you app -->
 show the list for movie and favourite page when the page is not defiend give error.
 
+---
+## lab12
+
+in todays lab i learned how to send get requests to a 3rd party API and display data and to create Error Handler function.
+
+  ## WRRC:
+  ![wrrc image](/img/WRRC%20NEW.png)

@@ -1,6 +1,6 @@
 'use strict'
 // http://localhost:3000
-//api key= 160757eac693cda92c0ff8c3c1b63f5b
+
 
 //import the express framework
 const express = require('express');
@@ -8,18 +8,17 @@ const express = require('express');
 //import cors
 //sercer open to all  client  request 
 const cors = require('cors');
-
 const movieData = require('./Movie Data/data.json');//import data.json inside movie data
-
 const axios = require('axios');//send a request for a server and multi method
 require('dotenv').config();
-
+const pg = require('pg'); //1. importing the pg (postgres library)
 const server = express();
 server.use(cors());
-
-
+server.use(express.json()); // to parse into JSON   
 
 const PORT = 3000;
+//2. create obj from Client
+const client = new pg.Client(process.env.DATABASE_URL);// the Client is in pg library 
 //constructor to get data from json or any location
 function Movielibrary(id, title, release_date, poster_path, overview) {
     this.id = id;
@@ -34,7 +33,9 @@ server.get('/favorite', favHandler)
 server.get('/trending', trendingHandler)
 server.get('/search', searchHandler)
 server.get('/collection', collectionHandler)
-server.get('/tv',tvHandler);
+server.get('/tv', tvHandler);
+server.get('/favMovies', getFavMoviesHandler)
+server.post('/favMovies', addFavMoviesHandler)
 server.get('*', defultHandler)
 server.use(errorHandler);// bulit-in middleware function allow me to handle the Error
 
@@ -123,7 +124,7 @@ function collectionHandler(req, res) {
     }
 
 }
-function tvHandler(req,res){
+function tvHandler(req, res) {
     try {
         const apiKey = process.env.APIKey;
         const url = `https://api.themoviedb.org/3/tv/100?api_key=${apiKey}&language=en-US`;
@@ -142,12 +143,34 @@ function tvHandler(req,res){
         errorHandler(error, req, res);
     }
 
-
-
-
+}
+function getFavMoviesHandler(req, res) {
+    const sql = 'SELECT * FROM movietalbe';
+    client.query(sql) //the data come from query from client data base stored in (.then( inside data))
+        .then((data) => {
+            res.send(data.rows);
+        })
+        .catch((error) => {
+            res.status(500).send(error);
+        })
 
 }
 
+function addFavMoviesHandler(req, res) {
+    const moviess = req.body;
+    let sql = `INSERT INTO movieTalbe(title,overview) VALUES ($1,$2) RETURNING *;`
+    let values = [moviess.title, moviess.overview];
+
+    client.query(sql, values)
+        .then((data) => {
+            res.send(data.rows);
+        })
+        .catch((error) => {
+            res.status(500).send(error);
+        })
+
+
+}
 
 //middle ware function 
 function errorHandler(error, req, res) {
@@ -157,8 +180,16 @@ function errorHandler(error, req, res) {
     }
     res.status(err.status).send(err);
 }
+//connect the server with movies database
+client.connect()
+    .then(() => {  //promise 
+        //to see the result in a ubuntu
+        server.listen(PORT, () => {
+            console.log(`listening on ${PORT} : I am ready`);
+        })
+    })
 
 //to see the result in a ubuntu
-server.listen(PORT, () => {
-    console.log(`listening on ${PORT} : I am ready`);
-})
+// server.listen(PORT, () => {
+//     console.log(`listening on ${PORT} : I am ready`);
+// })

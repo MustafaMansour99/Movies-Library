@@ -26,3 +26,14 @@ in todays lab i learned how to send get requests to a 3rd party API and display 
 
   ## WRRC:
   ![wrrc image](/img/WRRC%20NEW.png)
+
+---
+
+## lab13
+***in todays lab i learned how to set up your database and read and save data to it***
+
+---
+
+  ## WRRC:
+![wrrc image](./img/WRRC-LAB13.png)
+

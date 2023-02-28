@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS movieTalbe (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255),
+    overview VARCHAR(10000)
+);

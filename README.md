@@ -37,3 +37,14 @@ in todays lab i learned how to send get requests to a 3rd party API and display 
   ## WRRC:
 ![wrrc image](./img/WRRC-LAB13.png)
 
+---
+
+## lab14
+***in todays lab i learned how to update and delete and get specific an entry in my database***
+
+---
+
+  ## WRRC:
+![wrrc image](./img/WRRC-LAB13.png)
+
+

@@ -36,6 +36,11 @@ server.get('/collection', collectionHandler)
 server.get('/tv', tvHandler);
 server.get('/favMovies', getFavMoviesHandler)
 server.post('/favMovies', addFavMoviesHandler)
+server.put('/favMovies/:id', updateFavMoviesHandler)
+server.delete('/Delete/:id', deleteFavMoviesHandler)
+server.get('/getMovie/:id', getspecificFavMoviesHandler)
+
+
 server.get('*', defultHandler)
 server.use(errorHandler);// bulit-in middleware function allow me to handle the Error
 
@@ -158,10 +163,11 @@ function getFavMoviesHandler(req, res) {
 
 function addFavMoviesHandler(req, res) {
     const moviess = req.body;
-    let sql = `INSERT INTO movieTalbe(title,overview) VALUES ($1,$2) RETURNING *;`//add value in another way VALUES ('${moviess.title}','${moviess.overview}';);
-    let values = [moviess.title, moviess.overview];
+    // let sql = `INSERT INTO movieTalbe(title,overview) VALUES ($1,$2) RETURNING *;`//add value in another way VALUES ('${moviess.title}','${moviess.overview}';);
+    // let values = [moviess.title, moviess.overview];
+    let sql = `INSERT INTO movieTalbe(title,overview) VALUES ('${moviess.title}','${moviess.overview}') RETURNING *;`
 
-    client.query(sql, values)
+    client.query(sql)
         .then((data) => {
             res.send(data.rows);
         })
@@ -169,6 +175,43 @@ function addFavMoviesHandler(req, res) {
             res.status(500).send(error);
         })
 
+
+}
+function updateFavMoviesHandler(req, res) {
+    const id = req.params.id;
+    const moviesss = req.body;
+    const sql = `UPDATE movieTalbe SET title ='${moviesss.title}', overview ='${moviesss.overview}' WHERE id= ${id} RETURNING *;`
+    client.query(sql)
+        .then((data) => {
+            res.send(data.rows);
+        })
+        .catch((error) => {
+            res.status(500).send(error);
+        })
+
+}
+function deleteFavMoviesHandler(req, res) {
+    const id = req.params.id;
+    const sql = `DELETE FROM movieTalbe WHERE id=${id}`
+    client.query(sql)
+        .then((data) => {
+            res.send("data deleted.");
+        })
+        .catch((error) => {
+            res.status(500).send(error);
+        })
+
+}
+function getspecificFavMoviesHandler(req, res) {
+    const id = req.params.id;
+    const sql = `SELECT * FROM movietalbe WHERE id='${id}'`
+    client.query(sql) //the data come from query from client data base stored in (.then( inside data))
+        .then((data) => {
+            res.send(data.rows);
+        })
+        .catch((error) => {
+            res.status(500).send(error);
+        })
 
 }
 

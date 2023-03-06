@@ -39,16 +39,25 @@ server.post('/favMovies', addFavMoviesHandler)
 server.put('/favMovies/:id', updateFavMoviesHandler)
 server.delete('/Delete/:id', deleteFavMoviesHandler)
 server.get('/getMovie/:id', getspecificFavMoviesHandler)
-
-
 server.get('*', defultHandler)
 server.use(errorHandler);// bulit-in middleware function allow me to handle the Error
 
 // function handler 
 function homeHandler(req, res) {
-    // const movieData = require('./Movie Data/data.json');//import data.json inside movie data
-    const movies = new Movielibrary(movieData.title, movieData.poster_path, movieData.overview);
-    res.send(movies);
+    // // const movieData = require('./Movie Data/data.json');//import data.json inside movie data
+    // const movies = new Movielibrary(movieData.title, movieData.poster_path, movieData.overview);
+    // res.send(movies);
+    const sql = 'SELECT * FROM movietalbe';
+    client.query(sql) //the data come from query from client data base stored in (.then( inside data))
+        .then((data) => {
+            res.send(data.rows);
+        })
+        .catch((error) => {
+            res.status(500).send(error);
+        })
+
+
+
 }
 function favHandler(req, res) {
     res.status(200).send("Welcome to Favorite Page")

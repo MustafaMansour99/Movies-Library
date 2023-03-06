@@ -16,7 +16,7 @@ const server = express();
 server.use(cors());
 server.use(express.json()); // to parse into JSON   
 
-const PORT = 3000;
+const PORT = process.env.PORT|| 3000;
 //2. create obj from Client
 const client = new pg.Client(process.env.DATABASE_URL);// the Client is in pg library 
 //constructor to get data from json or any location

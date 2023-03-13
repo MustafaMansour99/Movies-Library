@@ -172,7 +172,7 @@ function addFavMoviesHandler(req, res) {
     const moviess = req.body;
     // let sql = `INSERT INTO movieTalbe(title,overview) VALUES ($1,$2) RETURNING *;`//add value in another way VALUES ('${moviess.title}','${moviess.overview}';);
     // let values = [moviess.title, moviess.overview];
-    let sql = `INSERT INTO movieTalbe(title,poster_path,overview,comment) VALUES ('${moviess.title}','${moviess.overview}','${moviess.poster_path}','${moviess.comment}') RETURNING *;`
+    let sql = `INSERT INTO movietalbe(title,poster_path,overview,comment) VALUES ('${moviess.title}','${moviess.overview}','${moviess.poster_path}','${moviess.comment}') RETURNING *;`
 
     client.query(sql)
         .then((data) => {
@@ -187,7 +187,7 @@ function addFavMoviesHandler(req, res) {
 function updateFavMoviesHandler(req, res) {
     const id = req.params.id;
     const moviesss = req.body;
-    const sql = `UPDATE movieTalbe SET title ='${moviesss.title}', overview ='${moviesss.overview}' WHERE id= ${id} RETURNING *;`
+    const sql = `UPDATE movietalbe SET title ='${moviesss.title}', overview ='${moviesss.overview}' WHERE id= ${id} RETURNING *;`
     client.query(sql)
         .then((data) => {
             res.send(data.rows);
@@ -199,7 +199,7 @@ function updateFavMoviesHandler(req, res) {
 }
 function deleteFavMoviesHandler(req, res) {
     const id = req.params.id;
-    const sql = `DELETE FROM movieTalbe WHERE id=${id} RETURNING *;`
+    const sql = `DELETE FROM movietalbe WHERE id=${id} RETURNING *;`
     client.query(sql)
         .then((data) => {
             res.send(data.rows);

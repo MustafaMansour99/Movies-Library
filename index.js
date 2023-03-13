@@ -1,7 +1,5 @@
 'use strict'
 // http://localhost:3000
-
-
 //import the express framework
 const express = require('express');
 
@@ -35,7 +33,7 @@ server.get('/search', searchHandler)
 server.get('/collection', collectionHandler)
 server.get('/tv', tvHandler);
 server.get('/favMovies', getFavMoviesHandler)
-server.post('/favMovies', addFavMoviesHandler)
+server.post('/addFav', addFavMoviesHandler)
 server.put('/favMovies/:id', updateFavMoviesHandler)
 server.delete('/Delete/:id', deleteFavMoviesHandler)
 server.get('/getMovie/:id', getspecificFavMoviesHandler)
@@ -201,10 +199,10 @@ function updateFavMoviesHandler(req, res) {
 }
 function deleteFavMoviesHandler(req, res) {
     const id = req.params.id;
-    const sql = `DELETE FROM movieTalbe WHERE id=${id}`
+    const sql = `DELETE FROM movieTalbe WHERE id=${id} RETURNING *;`
     client.query(sql)
         .then((data) => {
-            res.send("data deleted.");
+            res.send(data.rows);
         })
         .catch((error) => {
             res.status(500).send(error);

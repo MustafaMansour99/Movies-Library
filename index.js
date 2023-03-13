@@ -172,7 +172,7 @@ function addFavMoviesHandler(req, res) {
     const moviess = req.body;
     // let sql = `INSERT INTO movieTalbe(title,overview) VALUES ($1,$2) RETURNING *;`//add value in another way VALUES ('${moviess.title}','${moviess.overview}';);
     // let values = [moviess.title, moviess.overview];
-    let sql = `INSERT INTO movieTalbe(title,overview) VALUES ('${moviess.title}','${moviess.overview}','${moviess.poster_path}') RETURNING *;`
+    let sql = `INSERT INTO movieTalbe(title,poster_path,overview,comment) VALUES ('${moviess.title}','${moviess.overview}','${moviess.poster_path}','${moviess.comment}') RETURNING *;`
 
     client.query(sql)
         .then((data) => {

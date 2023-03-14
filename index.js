@@ -18,9 +18,9 @@ const PORT = process.env.PORT|| 3000;
 //2. create obj from Client
 const client = new pg.Client(process.env.DATABASE_URL);// the Client is in pg library 
 //constructor to get data from json or any location
-function Movielibrary(id, title, release_date, poster_path, overview) {
+function Movielibrary(id, title, release_date, poster_path, overview,name) {
     this.id = id;
-    this.title = title;
+    this.title = title||name;
     this.release_date = release_date;
     this.poster_path = poster_path;
     this.overview = overview;
@@ -79,7 +79,7 @@ function trendingHandler(req, res) {
         axios.get(url)
             .then((result) => {          //<<= like await and async
                 let mapRes = result.data.results.map((item) => {
-                    let singleMovie = new Movielibrary(item.id, item.title, item.release_date, item.poster_path, item.overview);
+                    let singleMovie = new Movielibrary(item.id, item.title, item.release_date, item.poster_path, item.overview,item.name);
                     return singleMovie;
                 })
                 res.send(mapRes);

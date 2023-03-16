@@ -187,7 +187,7 @@ function addFavMoviesHandler(req, res) {
 function updateFavMoviesHandler(req, res) {
     const id = req.params.id;
     const moviesss = req.body;
-    const sql = `UPDATE movietalbe SET title ='${moviesss.title}', overview ='${moviesss.overview}' WHERE id= ${id} RETURNING *;`
+    const sql = `UPDATE movietalbe SET title ='${moviesss.comment}' WHERE id= ${id} RETURNING *;`
     client.query(sql)
         .then((data) => {
             res.send(data.rows);

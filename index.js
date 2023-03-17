@@ -208,7 +208,16 @@ function deleteFavMoviesHandler(req, res) {
   client
     .query(sql)
     .then((data) => {
-      res.send(data.rows);
+      // res.send(data.rows);
+      const sql = "SELECT * FROM movietalbe";
+      client.query(sql) //the data come from query from client data base stored in (.then( inside data))
+        .then((data) => {
+          res.send(data.rows);
+        })
+        .catch((error) => {
+          res.status(500).send(error);
+        });
+
     })
     .catch((error) => {
       res.status(500).send(error);

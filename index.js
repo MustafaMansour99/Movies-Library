@@ -184,14 +184,13 @@ function addFavMoviesHandler(req, res) {
 function updateFavMoviesHandler(req, res) {
   const id = req.params.id;
   const moviesss = req.body;
-  const sql = `UPDATE movietalbe SET comment ='${moviesss.comment}' WHERE id= ${id} RETURNING *;`;
+  const sql = `UPDATE movietalbe SET comment='${moviesss.comment}' WHERE id= ${id} RETURNING *;`;
   client
     .query(sql)
     .then((data) => {
       // res.send(data.rows);
       const sql = "SELECT * FROM movietalbe";
-      client
-        .query(sql) //the data come from query from client data base stored in (.then( inside data))
+      client.query(sql) //the data come from query from client data base stored in (.then( inside data))
         .then((data) => {
           res.send(data.rows);
         })
